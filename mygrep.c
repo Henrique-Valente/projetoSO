@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX_VALUE 10
+#include "list.h"
 
 int main(int argc, char *argv[]){
     char* fileName = argv[2];
@@ -11,33 +11,30 @@ int main(int argc, char *argv[]){
     char* needle = strdup(argv[1]); //Palavra que queremos encontrar
     char* haystack; //Irá representar cada linha
     char* ptr; 
-    int i = 0;
     
-
+    
     while (fgets(line, sizeof(line), file)) { //Guarda cada linha numa string
-        int* columns = malloc(sizeof(int) * MAX_VALUE); //Guarda o numero de colunas
-        for(int j=0;j<MAX_VALUE;j++) columns[j] = -1;  //Coloca o valor das posicoes do array a -1
+        list *columns = list_new(); //Guarda o numero de colunas
         cur_line++; //Incrementa o numero da linha atual
         haystack = strdup(line);
         ptr = haystack;
         while( (ptr = strstr(ptr, needle)) != NULL){
             int pos = strlen(haystack) - strlen(ptr) + 1;
-            columns[i] = pos;
+            list_add_last(pos,columns);
             ptr++;
-            i++;
         }
-        i = 0; // Reset do i
-        if(columns[i] != -1){   //Faz o print dos valores
+
+        if(list_size(columns) != 0){   //Faz o print dos valores
             printf("[%d:", cur_line);
-            while(columns[i+1] != -1){
-                printf("%d,", columns[i]);
-                i++;
+            while(list_size(columns) != 1){
+                printf("%d,", list_get_first(columns));
+                list_remove_first(columns);
             }
-            printf("%d", columns[i]);
+            printf("%d", list_get_first(columns));
+            list_remove_first(columns);
             printf("]\n");
         }
-        i = 0; // Reset novamente
-        
+
         free(columns);
     }
 

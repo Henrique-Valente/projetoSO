@@ -7,10 +7,10 @@ int main(){
     int i = 0;
     
 
-    list_add_first(10,l1);
-    list_add_first(11,l1);
-    list_add_first(12,l1);
-    list_add_first(13,l1);
+    list_add_last(10,l1);
+    list_add_last(11,l1);
+    list_add_last(12,l1);
+    list_add_last(13,l1);
     i = list_get_last(l1);
     list_print(l1);
     printf("Último valor: %d\n", i);
